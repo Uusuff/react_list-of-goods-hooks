@@ -1,5 +1,6 @@
 import 'bulma/css/bulma.css';
 import React from 'react';
+import { SortType } from '../../types/SortType';
 
 interface Props {
   isLight: string;
@@ -9,7 +10,7 @@ interface Props {
   setResetVisible: (value: boolean) => void;
   isReverse: boolean;
   setIsReverse: (value: boolean) => void;
-  handleSort: (field: string) => void;
+  sortGoods: (field: SortType) => void;
 }
 
 export const Buttons: React.FC<Props> = ({
@@ -20,25 +21,27 @@ export const Buttons: React.FC<Props> = ({
   setResetVisible,
   isReverse,
   setIsReverse,
-  handleSort
+  sortGoods,
 }) => {
+  const buttons: [SortType, string][] = [
+    [SortType.Alphabetically, 'is-info'],
+    [SortType.Length, 'is-success'],
+  ];
+
   return (
     <div className="buttons">
-      {[
-        ['Sort alphabetically', 'is-info'],
-        ['Sort by length', 'is-success'],
-      ].map(([label, style]) => (
+      {buttons.map(([type, style]) => (
         <button
-          key={label}
+          key={type}
           type="button"
-          className={`button ${style} ${activeButton !== label ? isLight : ''}`}
+          className={`button ${style} ${activeButton !== type ? isLight : ''}`}
           onClick={() => {
-            setActiveButton(label);
-            handleSort(label);
+            setActiveButton(type);
+            sortGoods(type);
             setResetVisible(true);
           }}
         >
-          {label}
+          {type}
         </button>
       ))}
 
@@ -46,7 +49,7 @@ export const Buttons: React.FC<Props> = ({
         type="button"
         className={`button is-warning ${!isReverse ? isLight : ''}`}
         onClick={() => {
-          handleSort('Reverse');
+          sortGoods(SortType.Reverse);
         }}
       >
         Reverse
@@ -57,7 +60,7 @@ export const Buttons: React.FC<Props> = ({
           type="button"
           className="button is-danger is-light"
           onClick={() => {
-            handleSort('Reset');
+            sortGoods(SortType.Reset);
             setResetVisible(false);
             setActiveButton('');
             setIsReverse(false);
@@ -68,4 +71,4 @@ export const Buttons: React.FC<Props> = ({
       )}
     </div>
   );
-}
+};

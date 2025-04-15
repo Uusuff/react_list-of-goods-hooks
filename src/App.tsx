@@ -4,23 +4,24 @@ import './App.scss';
 import { Buttons } from './components/buttons/Buttons';
 import { ListGoods } from './components/listGoods/ListGoods';
 import { goodsFromServer } from './data/goods';
+import { SortType } from './types/SortType';
 
 export const App: React.FC = () => {
   const isLight = 'is-light';
-  const [activeButton, setActiveButton] = useState('');
+  const [activeButton, setActiveButton] = useState<SortType | ''>('');
   const [goods, setGoods] = useState<string[]>(goodsFromServer);
   const [resetVisible, setResetVisible] = useState<boolean>(false);
   const [isReverse, setIsReverse] = useState<boolean>(false);
 
-  const handleSort = (field: string) => {
+  const sortGoods = (field: SortType) => {
     let sortedGoods = [...goods];
 
-    if (field === 'Reverse') {
+    if (field === SortType.Reverse) {
       setIsReverse(!isReverse);
     }
 
     switch (field) {
-      case 'Sort by length':
+      case SortType.Length:
         if (!isReverse) {
           sortedGoods.sort((a, b) => a.length - b.length);
         } else {
@@ -28,7 +29,7 @@ export const App: React.FC = () => {
         }
 
         break;
-      case 'Sort alphabetically':
+      case SortType.Alphabetically:
         if (!isReverse) {
           sortedGoods.sort((a, b) => a.localeCompare(b));
         } else {
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
         }
 
         break;
-      case 'Reverse':
+      case SortType.Reverse:
         sortedGoods.reverse();
         setResetVisible(!isReverse);
         break;
@@ -57,7 +58,7 @@ export const App: React.FC = () => {
         setResetVisible={setResetVisible}
         isReverse={isReverse}
         setIsReverse={setIsReverse}
-        handleSort={handleSort}
+        sortGoods={sortGoods}
       />
       <ListGoods goods={goods} />
     </div>

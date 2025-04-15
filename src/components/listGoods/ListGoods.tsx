@@ -5,14 +5,14 @@ interface Props {
   goods: string[];
 }
 
-export const ListGoods:React.FC<Props> = ({ goods }) => {
+export const ListGoods: React.FC<Props> = ({ goods }) => {
   return (
     <ul>
-      {goods.map((good) => (
+      {goods.map(good => (
         <li key={good} data-cy="Good">
           {good}
         </li>
       ))}
     </ul>
   );
-}
+};
